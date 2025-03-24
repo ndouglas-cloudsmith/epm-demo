@@ -1,8 +1,4 @@
-import rego.v1
 package cloudsmith
-
-# Default match rule
-default match := false
 
 # Define maximum CVSS score threshold
 max_cvss_score := 7
@@ -17,17 +13,23 @@ target_repository := "acme-repo-one"
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
 
 # Main match condition
-match := in_target_repository and count(reason) > 0
+match if {
+    in_target_repository
+    count(reason) != 0
+}
 
 # Check if the package belongs to the specified repository
-in_target_repository := input.v0.repository.name == target_repository
+in_target_repository if {
+    input.v0.repository.name == target_repository
+}
 
 # Generate reasons for matching vulnerabilities
-reason[msg] {
+reason contains msg if {
+    # Loop through all vulnerabilities
     some vulnerability in input.v0.security_scan.Vulnerabilities
 
     # Ignore specific CVEs
-    not ignored_cves[vulnerability.VulnerabilityID]
+    not ignored_cve(vulnerability)
 
     # Only consider vulnerabilities with a fixed version
     vulnerability.FixedVersion
@@ -45,6 +47,11 @@ reason[msg] {
     # Message for logging the reason
     msg := sprintf(
         "CVSS Score: %v | Package: %v | Vulnerability: %v | Reason: %v",
-        [val.V3Score, input.v0.package.name, vulnerability.VulnerabilityID, vulnerability.Description]
+        [val.V3Score, input.v0["package"].name, vulnerability.VulnerabilityID, vulnerability.Description]
     )
+}
+
+# Rule to check if CVE is ignored
+ignored_cve(vulnerability) if {
+    vulnerability.VulnerabilityID in ignored_cves
 }
