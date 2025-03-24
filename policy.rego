@@ -1,3 +1,4 @@
+import rego.v1
 package cloudsmith
 # Default match rule
 default match := false
