@@ -1,5 +1,7 @@
 package cloudsmith
 
+import future.keywords.in  # Required for "some x in xs" syntax
+
 # Define maximum CVSS score threshold
 max_cvss_score := 7
 
@@ -25,7 +27,7 @@ in_target_repository if {
 
 # Generate reasons for matching vulnerabilities
 reason contains msg if {
-    # Loop through all vulnerabilities
+    # FIXED: Now `some vulnerability in ...` will work
     some vulnerability in input.v0.security_scan.Vulnerabilities
 
     # Ignore specific CVEs
