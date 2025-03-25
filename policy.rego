@@ -1,6 +1,8 @@
 package cloudsmith
 
+import rego.v1
 import future.keywords.in  # Required for "some x in xs" syntax
+import future.keywords.some
 
 # Define maximum CVSS score threshold
 max_cvss_score := 7
@@ -14,24 +16,26 @@ target_repository := "acme-repo-one"
 # Define CVEs to ignore
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
 
+# Default match value
+default match := false
+
 # Main match condition
-match if {
+match {
     in_target_repository
-    count(reason) != 0
+    count(reason) > 0
 }
 
 # Check if the package belongs to the specified repository
-in_target_repository if {
+in_target_repository {
     input.v0.repository.name == target_repository
 }
 
 # Generate reasons for matching vulnerabilities
-reason contains msg if {
-    # FIXED: Now `some vulnerability in ...` will work
+reason[msg] {
     some vulnerability in input.v0.security_scan.Vulnerabilities
 
     # Ignore specific CVEs
-    not ignored_cve(vulnerability)
+    not ignored_cves[vulnerability.VulnerabilityID]
 
     # Only consider vulnerabilities with a fixed version
     vulnerability.FixedVersion
@@ -51,9 +55,4 @@ reason contains msg if {
         "CVSS Score: %v | Package: %v | Vulnerability: %v | Reason: %v",
         [val.V3Score, input.v0["package"].name, vulnerability.VulnerabilityID, vulnerability.Description]
     )
-}
-
-# Rule to check if CVE is ignored
-ignored_cve(vulnerability) if {
-    vulnerability.VulnerabilityID in ignored_cves
 }
