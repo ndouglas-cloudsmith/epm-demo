@@ -1,4 +1,5 @@
 # References from - https://help.cloudsmith.io/edit/enterprise-policy-management-getting-started
+# Update - https://help.cloudsmith.io/docs/enterprise-policy-management
 
 package cloudsmith
 import rego.v1
