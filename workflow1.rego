@@ -1,14 +1,11 @@
 package cloudsmith
 import rego.v1
 
-# Default match rule
-default match := false
-
 # Define minimum CVSS score threshold
 max_cvss_score := 4
 
-# Define time-based policy threshold (Vulnerabilities older than 60 days)
-older_than_days := -60
+# Define time-based policy threshold (Vulnerabilities older than 10 days)
+older_than_days := -10
 
 # Define CVEs to ignore
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
@@ -33,12 +30,6 @@ reason contains msg if {
     t := time.add_date(time.now_ns(), 0, 0, older_than_days)
     published_date := time.parse_rfc3339_ns(vulnerability.PublishedDate)
     published_date <= t
-
-    # Message for logging the reason
-    msg := sprintf(
-        "CVSS Score: %v | Package: %v | Vulnerability: %v | Reason: %v",
-        [val.V3Score, input.v0["package"].name, vulnerability.VulnerabilityID, vulnerability.Description]
-    )
 }
 
 # Rule to check if CVE is ignored
