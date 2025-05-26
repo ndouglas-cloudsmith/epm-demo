@@ -1,7 +1,7 @@
 package cloudsmith
 import rego.v1
 
-max_epss := 0.0002
+max_epss := 0.0001
 
 match if {
     some vulnerability in input.vulnerabilities
