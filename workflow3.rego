@@ -2,7 +2,8 @@ package cloudsmith
 import rego.v1
 
 max_epss := 0.0002
-ignored_cves := {"CVE-2023-45853"}
+# Ignoring the Spotipy lightweight Python library CVE for the Spotify Web API.
+ignored_cves := {"CVE-2025-27154"}
 
 match if {
     some vulnerability in input.v0["vulnerabilities"]
