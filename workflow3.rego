@@ -1,7 +1,7 @@
 package cloudsmith
 import rego.v1
 default match := false
-max_epss := 0.2
+max_epss := 0.0001
 target_repository := "acme-corporation"
 ignored_cves := {"CVE-2023-45853"}
 
