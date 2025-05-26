@@ -11,7 +11,7 @@ max_cvss_score := 4
 older_than_days := -60
 
 # Define the target repository
-target_repository := "REPOSITORY_NAME"
+target_repository := "acme-corporation"
 
 # Define CVEs to ignore
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
