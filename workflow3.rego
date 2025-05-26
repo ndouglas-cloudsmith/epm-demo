@@ -1,7 +1,7 @@
 package cloudsmith
 import rego.v1
 
-max_epss := 0.0001
+max_epss := 0.0002
 ignored_cves := {"CVE-2023-45853"}
 
 match if {
