@@ -10,22 +10,8 @@ max_cvss_score := 4
 # Define time-based policy threshold (Vulnerabilities older than 60 days)
 older_than_days := -60
 
-# Define the target repository
-target_repository := "acme-corporation"
-
 # Define CVEs to ignore
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
-
-# Main match condition
-match if {
-    in_target_repository
-    count(reason) != 0
-}
-
-# Check if the package belongs to the specified repository
-in_target_repository if {
-    input.v0.repository.name == target_repository
-}
 
 # Generate reasons for matching vulnerabilities
 reason contains msg if {
