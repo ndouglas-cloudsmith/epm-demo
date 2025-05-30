@@ -3,7 +3,6 @@ default match := false
 
 max_epss := 0.0004
 max_cvss_score := 7
-target_repository := "acme-nonprod"
 older_than_days := -30
 ignored_cves := {"CVE-2023-45853"}
 
@@ -20,8 +19,6 @@ ignored_cves := {"CVE-2023-45853"}
 #     - Exceeds our EPSS threshold.
 #
 match if {
-    # Check repository
-    input.v0["repository"]["name"] == target_repository
 
     # Iterate through all vulnerabilities in `v0["vulnerabilities"]`.
     some vulnerability in input.v0["vulnerabilities"]
