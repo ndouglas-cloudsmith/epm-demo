@@ -11,7 +11,8 @@ match if {
 }
 
 reason contains msg if {
-	some vulnerability in input.v0.security_scan.Vulnerabilities
+	# some vulnerability in input.v0.security_scan.Vulnerabilities (Deprecated)
+          some vulnerability in target.Vulnerabilities
     vulnerability.FixedVersion
     vulnerability.Status == "fixed"
 	some _, val in vulnerability.CVSS
