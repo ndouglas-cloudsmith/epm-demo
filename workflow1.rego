@@ -13,9 +13,9 @@ older_than_days := -10
 ignored_cves := {"CVE-2023-45853", "CVE-2024-12345"}
 
 match if {
-  # some vulnerability in input.v0.security_scan.Vulnerabilities (Deprecated)
-    some target in input.v0.security_scan
-    some vulnerability in target.Vulnerabilities
+    some vulnerability in input.v0.security_scan.Vulnerabilities
+  # some target in input.v0.security_scan (Future Field)
+  # some vulnerability in target.Vulnerabilities (Future Field)
 
     not ignored_cve(vulnerability)
     vulnerability.FixedVersion
