@@ -1,5 +1,4 @@
 package cloudsmith
-import rego.v1
 
 default match := false
 
@@ -15,7 +14,7 @@ copyleft := {
 
 # Main policy rule
 match if {
-    lower_license := lower(input.v0["package"].license)
+    lower_license := lower(input.v0.package.license.oss_license.spdx_identifier)
     some l in copyleft
     contains(lower_license, l)
 }
